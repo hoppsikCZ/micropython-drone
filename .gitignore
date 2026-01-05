@@ -14,6 +14,7 @@ build/
 *.swp
 *.swo
 *~
+.micropico
 
 # OS
 .DS_Store
@@ -21,3 +22,4 @@ Thumbs.db
 
 # Project specific
 *.pyc
+yamspy.py

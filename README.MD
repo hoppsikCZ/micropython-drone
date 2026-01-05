@@ -105,6 +105,10 @@ Main class for MSP communication.
 - **Checksum errors**: Verify baud rate matches flight controller settings
 - **Different scaling**: Some flight controllers use different scaling for attitude. Adjust `parse_attitude()` accordingly
 
+## Acknowledgments
+
+This library was inspired by [YAMSPy](https://github.com/thecognifly/YAMSPy), a Python implementation of the Multiwii Serial Protocol for standard Python environments.
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
