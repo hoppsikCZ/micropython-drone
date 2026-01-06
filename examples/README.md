@@ -17,6 +17,24 @@ Continuously requests and displays attitude data (roll, pitch, yaw) from a fligh
 - Default pins: TX=GP0, RX=GP1
 - Adjust these in the `main_loop()` function if needed
 
+### `multi_data_monitor.py`
+Requests and displays multiple types of data from a flight controller:
+- **Attitude**: Roll, pitch, and yaw angles
+- **Status**: Cycle time, I2C errors, active sensors, flight mode, profile
+- **Analog**: Battery voltage, current draw, mAh consumed, RSSI
+
+**Usage:**
+1. Copy the `micropython_msp/` folder to your Pico filesystem
+2. Copy `multi_data_monitor.py` to your Pico
+3. Run the script - it will continuously print multiple data types to the REPL
+
+**Configuration:**
+- Default UART: UART(0) at 115200 baud
+- Default pins: TX=GP0, RX=GP1
+- Adjust these in the `main_loop()` function if needed
+
+**Note:** This example uses the built-in parse methods from the library (`parse_status()`, `parse_analog()`, etc.). The `parse_analog()` method defaults to Betaflight format - pass `is_inav=True` if using iNAV firmware.
+
 ## Deploying to Pico
 
 ### Using mpremote:

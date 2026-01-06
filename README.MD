@@ -2,7 +2,11 @@
 
 A lightweight MicroPython library for communicating with flight controllers (Betaflight, iNAV, etc.) using the Multiwii Serial Protocol (MSP) v1 over UART.
 
-This is a general MicroPython library that should work on any MicroPython-compatible board with UART support. **Note:** This library has only been tested on Raspberry Pi Pico W.
+This is a general MicroPython library that should work on any MicroPython-compatible board with UART support. **Note:** This library has only been tested on Raspberry Pi Pico W and Betaglight FC.
+
+## ⚠️ Warning
+
+**This is a school project and may contain mistakes or bugs. Use at your own risk.** This library is provided as-is without any warranty. Always test thoroughly in a safe environment before using with actual flight controllers or drones. The authors are not responsible for any damage, injury, or issues resulting from the use of this software.
 
 ## Features
 
@@ -21,6 +25,7 @@ micropython-drone/
 │   └── MSP_commands.py   # MSP command constants
 ├── examples/             # Example scripts (configured for Pico W)
 │   ├── attitude_monitor.py
+│   ├── multi_data_monitor.py
 │   └── README.md
 └── README.MD            # This file
 ```
@@ -47,7 +52,8 @@ angles = msp.parse_attitude(payload)
 ### Examples
 
 See the [examples/](examples/) directory for complete working examples:
-- `attitude_monitor.py` - Continuously monitors and displays attitude data
+- `attitude_monitor.py` - Continuously monitors and displays attitude data (roll, pitch, yaw)
+- `multi_data_monitor.py` - Monitors multiple data types: attitude, status, and analog (battery voltage, current, RSSI)
 
 ## Hardware Setup
 
@@ -79,7 +85,8 @@ To use this library on your MicroPython-compatible device:
    ```
 
 3. **Use examples as a starting point**: Check out the example scripts in the `examples/` directory:
-   - `examples/attitude_monitor.py` - Complete example showing how to monitor attitude data (configured for Pico W)
+   - `examples/attitude_monitor.py` - Simple example showing how to monitor attitude data (configured for Pico W)
+   - `examples/multi_data_monitor.py` - Advanced example showing multiple data types: attitude, status, and analog data
    
    You can upload and run these examples directly, or use them as a reference for your own projects. Note that the examples are configured for Raspberry Pi Pico W - adjust UART pins and configuration for your specific board.
 
@@ -97,7 +104,17 @@ Main class for MSP communication.
 **Methods:**
 - `send_request(cmd, payload=b"")` - Send an MSP v1 request
 - `read_response(timeout_ms=100)` - Read MSP response, returns `(cmd, payload)` or `(None, None)`
-- `parse_attitude(payload_bytes)` - Parse attitude data, returns `(roll, pitch, yaw)` in degrees
+
+**Parse Methods:**
+- `parse_attitude(payload_bytes)` - Parse MSP_ATTITUDE, returns `(roll, pitch, yaw)` in degrees
+- `parse_status(payload_bytes)` - Parse MSP_STATUS, returns dict with cycle_time, i2c_errors, active_sensors, mode, profile
+- `parse_analog(payload_bytes, is_inav=False)` - Parse MSP_ANALOG, returns dict with voltage, mah_drawn, rssi, amperage
+- `parse_raw_imu(payload_bytes)` - Parse MSP_RAW_IMU, returns dict with accelerometer, gyroscope, magnetometer arrays
+- `parse_altitude(payload_bytes)` - Parse MSP_ALTITUDE, returns altitude in meters (float)
+- `parse_rc(payload_bytes)` - Parse MSP_RC, returns dict with active_channels and channels list
+- `parse_motor(payload_bytes)` - Parse MSP_MOTOR, returns list of motor values (0-2000)
+- `parse_servo(payload_bytes)` - Parse MSP_SERVO, returns list of servo values
+- `parse_raw_gps(payload_bytes, is_inav=False)` - Parse MSP_RAW_GPS, returns dict with GPS data
 
 ## Troubleshooting
 

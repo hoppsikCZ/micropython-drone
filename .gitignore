@@ -23,3 +23,5 @@ Thumbs.db
 # Project specific
 *.pyc
 yamspy.py
+test_parsers.py
+test_parsers copy.py
